@@ -20,6 +20,7 @@ $deg: 45deg;
         transform-style: preserve-3d;
         .swiper-slide{
             position: absolute;
+            -webkit-box-reflect: below 1px linear-gradient(transparent 80%,rgba(0,0,0,.3));
             &::after{
                 position: absolute;
                 display: block;

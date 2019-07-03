@@ -14,6 +14,8 @@ class Swiper3D extends EventEmitter{
     private slides: NodeListOf<Element>
     private styleList: string[] = []
     private currentIndex: number = 0
+    private middleIndex: number = 0
+    
 
     constructor(container: string|HTMLElement, options: Options){
         super()
@@ -27,53 +29,36 @@ class Swiper3D extends EventEmitter{
     }
 
     private init(){
-        // .swiper-slide0{
-        //     background: red;
-        //     transform: translateX(-75%) rotateY($deg) scale(0.64);
-        //     z-index: -2;
-        // }
-        // .swiper-slide1{
-        //     background: orange;
-        //     transform: translateX(-50%) rotateY($deg) scale(0.8);
-        //     z-index: -1;
-        // }
-        // .swiper-slide2{
-        //     background: yellow;
-        //     z-index: 0;
-        // }
-        // .swiper-slide3{
-        //     background: green;
-        //     transform: translateX(50%) rotateY(-$deg) scale(0.8);
-        //     z-index: -1;
-    
-        // }
-        // .swiper-slide4{
-        //     background: blue;
-        //     transform: translateX(75%) rotateY(-$deg) scale(0.64);
-        //     z-index: -2;
-        // }
         this.currentIndex = this.options.start
-        const middleIndex = Math.floor(this.slides.length / 2)
+        this.middleIndex = Math.floor(this.slides.length / 2)
+        console.log(this.middleIndex)
         this.forEach(this.slides, (slide: HTMLElement, index) => {
             const SCALE_BASE = 0.8
             const ROTATE = 60
 
-            const showIndex = index - middleIndex
+            const showIndex = index - this.middleIndex
             const sign = Math.sign(showIndex)
             const absShowIndex = Math.abs(showIndex)
 
             const translateX: number = (1 - 1/Math.pow(2, absShowIndex))*sign
             const rotateY: number = showIndex ? -sign*ROTATE : 0
-            const scale:number = Math.pow(SCALE_BASE*sign, absShowIndex)
-            const zIndex = showIndex
-           
+            const scale:number = Math.pow(SCALE_BASE, absShowIndex)
+
+            const zIndex: number = showIndex === 0 ? 0 : - absShowIndex
+            
             const cssText = `
                 transition: all 0.3s ease;
                 transform: translateX(${translateX*100}%) rotateY(${rotateY}deg) scale(${scale});
                 z-index: ${zIndex};
             `
-            slide.style.cssText = cssText
             this.styleList.push(cssText)
+
+            slide.style.cssText = cssText
+            slide.dataset.index = "" + index
+            slide.addEventListener('click', (event:MouseEvent)=>{
+                const target = <HTMLButtonElement>event.target
+                this.jump(+target.dataset.index)
+            })
         })
     }
 
@@ -85,8 +70,12 @@ class Swiper3D extends EventEmitter{
 
     }
 
-    public jump(){
-
+    public jump(index: number){
+        console.log(index)
+        this.forEach(this.slides, (slide, i)=>{
+            const newIndex:number = (i + this.middleIndex - index) % this.slides.length
+            slide.style.cssText = this.styleList[newIndex]
+        })
     }
 
     private forEach(list: ArrayLike<any>, cb: (item: any, index: number) => void){
