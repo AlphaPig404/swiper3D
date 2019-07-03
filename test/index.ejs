@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Demo</title>
+    <link rel="stylesheet" href="<%= htmlWebpackPlugin.files.css[0] %>">
+    <style>
+        body{
+            background: #000000;
+        }
+        .swiper-slide{
+            width: 100px;
+            height: 100px;
+            background: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div class="swiper-container">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide swiper-slide0">Slide 1</div>
+            <div class="swiper-slide swiper-slide1">Slide 2</div>
+            <div class="swiper-slide swiper-slide2">Slide 3</div>
+            <div class="swiper-slide swiper-slide3">Slide 4</div>
+            <div class="swiper-slide swiper-slide4">Slide 5</div>
+            <div class="swiper-slide swiper-slide5">Slide 6</div>
+            <div class="swiper-slide swiper-slide6">Slide 7</div>
+        </div>
+    </div>
+    <script src="<%= htmlWebpackPlugin.files.js[0] %>"></script>
+    <script>        
+        var mySwiper = new Swiper3D('.swiper-container', {
+          loop: true,
+          showNum: 3,
+          start: 0
+        })
+        
+        mySwiper.on('change', function(current){
+            console.log(current)
+        })
+
+        mySwiper.next()
+        mySwiper.prev()
+
+        mySwiper.jump(0)
+    </script>
+</body>
+</html>

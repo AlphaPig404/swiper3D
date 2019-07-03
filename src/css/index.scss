@@ -1,0 +1,61 @@
+$deg: 45deg;
+.swiper-container{
+    display: block;
+    margin: 0 auto;
+    width: 100%;
+    position: relative;
+    overflow-x: hidden;
+    overflow-y: visible;
+    .swiper-wrapper{
+        width: 100%;
+        transform: translate3d(0, 0, 0);
+        transform-origin: 50% 50%;
+        backface-visibility: hidden;
+        box-sizing: content-box;
+        width: 100px;
+        height: 100px;
+        margin: 0 auto;
+        perspective: 600px;
+        perspective-origin: 50% 50%;
+        transform-style: preserve-3d;
+        .swiper-slide{
+            position: absolute;
+            &::after{
+                position: absolute;
+                display: block;
+                content: " ";
+                width: 4px;
+                height: 100%;
+                background: black;
+                left: 50%;
+                top: 0;
+                margin-left: -2px;
+            }
+        }
+        .swiper-slide0{
+            background: red;
+            transform: translateX(-75%) rotateY($deg) scale(0.64);
+            z-index: -2;
+        }
+        .swiper-slide1{
+            background: orange;
+            transform: translateX(-50%) rotateY($deg) scale(0.8);
+            z-index: -1;
+        }
+        .swiper-slide2{
+            background: yellow;
+            z-index: 0;
+        }
+        .swiper-slide3{
+            background: green;
+            transform: translateX(50%) rotateY(-$deg) scale(0.8);
+            z-index: -1;
+    
+        }
+        .swiper-slide4{
+            background: blue;
+            transform: translateX(75%) rotateY(-$deg) scale(0.64);
+            z-index: -2;
+        }
+    }
+}
