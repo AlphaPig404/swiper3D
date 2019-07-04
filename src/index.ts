@@ -4,7 +4,8 @@ import './css/index.scss';
 interface Options {
     loop?: boolean,
     start?: number,
-    showNum?: number
+    showNum?: number,
+    offsets?: object
 }
 
 const defaultOpitons:Options = {
@@ -101,6 +102,10 @@ class Swiper3D extends EventEmitter{
     public jump(index: number){
         this.currentIndex = index
         this.updateView()
+    }
+
+    public clearTimer(){
+        window.clearInterval(this.intervalID)
     }
 
     private updateView(){

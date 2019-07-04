@@ -35,7 +35,11 @@
         var mySwiper = new Swiper3D('.swiper-container', {
           loop: true,
           showNum: 7,
-          start: 0
+          start: 0,
+          offsets: {
+              1: 0.1,
+              6: 0.1,
+          }
         })
         
         mySwiper.on('change', function(current){
