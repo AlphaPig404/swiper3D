@@ -17,26 +17,33 @@ const defaultOpitons:Options = {
 class Swiper3D extends EventEmitter{
     private options: Options
     private $swiper: HTMLElement
+    private $wrapper: HTMLElement
     private slides: NodeListOf<Element>
     private styleList: string[] = []
     private currentIndex: number = 0
     private middleIndex: number = 0
+    private intervalID: number
     
-
     constructor(container: string|HTMLElement, options: Options){
         super()
         this.options = {...defaultOpitons, ...options}
         this.$swiper = typeof container === 'string' ? document.querySelector(container) : container 
-      
+        this.$wrapper = this.$swiper.querySelector('.swiper-wrapper')
         this.slides = this.$swiper.querySelectorAll('.swiper-slide')
         this.checkOptions(this.options)
         this.init()
     }
 
     private init(){
-        this.currentIndex = this.options.start
-        this.middleIndex = Math.floor(this.slides.length / 2)
+        this.middleIndex = Math.floor(this.options.showNum / 2)
+        const currentIndex = this.options.start
 
+        const hiddenStyle = `
+            transition: all 0.3s ease;
+            transform: translate3d(0,0,0) scale(0.2);
+            opacity: 0;
+            z-index: -100;
+        `
         this.forEach(this.slides, (slide: HTMLElement, index) => {
             const SCALE_BASE = 0.8
             const ROTATE = 60
@@ -52,22 +59,33 @@ class Swiper3D extends EventEmitter{
             const zIndex: number = showIndex === 0 ? 0 : - absShowIndex
             
             const cssText = `
-                transition: all 0.3s ease;
-                transform: translateX(${translateX*100}%) rotateY(${rotateY}deg) scale(${scale});
+                transition: all 0.5s ease;
+                transform: translateX(${translateX*100}%) rotateY(${rotateY}deg) translateZ(0px) scale(${scale});
                 z-index: ${zIndex};
+                opacity: 1;
             `
-            this.styleList.push(cssText)
 
-            slide.style.cssText = cssText
-            slide.dataset.index = "" + showIndex
-            slide.addEventListener('click', (event:MouseEvent)=>{
-                const target = <HTMLButtonElement>event.target
-                this.jump(+target.dataset.index)
-            })
+            if(index < this.options.showNum){
+                this.styleList.push(cssText)
+            }else{
+                this.styleList.push(hiddenStyle)
+            }
+
+            slide.dataset.index = "" + index
         })
+
+        this.jump(currentIndex)
+
         if(this.options.loop){
-            setInterval(this.next.bind(this), 1000)
+            this.intervalID = window.setInterval(this.next.bind(this), 5000)
         }
+
+        this.$wrapper.addEventListener('click', (event:MouseEvent)=>{
+            const target = <HTMLButtonElement>event.target
+            if(target.classList.contains('swiper-slide')){
+                this.jump(+target.dataset.index)
+            }
+        })
     }
 
     public prev() {
@@ -87,14 +105,14 @@ class Swiper3D extends EventEmitter{
 
     private updateView(){
         this.forEach(this.slides, (slide, index) => {
-            let _index =  (index - this.currentIndex ) % this.slides.length
-
+            let _index =  (index - this.currentIndex + this.middleIndex) % this.slides.length
             if(_index < 0) {
                 _index += this.slides.length
             }
 
             slide.style.cssText = this.styleList[_index]
         })
+        this.emit('change', this.currentIndex)
     }
 
     private forEach(list: ArrayLike<any>, cb: (item: any, index: number) => void){
@@ -104,8 +122,8 @@ class Swiper3D extends EventEmitter{
     }
 
     private checkOptions(options: Options){
-        if(!(options.showNum % 2 || options.showNum < 3)){
-            throw Error('showNum must be odd number >= 3')
+        if(!(options.showNum % 2) || options.showNum < 3 || options.showNum > this.slides.length){
+            throw Error(`showNum must be odd number >= 3 && <= ${this.slides.length}`)
         }
         if(options.start < 0 || options.start > this.slides.length - 1){
             throw Error(`start cross the border, must in [0, ${this.slides.length})`)

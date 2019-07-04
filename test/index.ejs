@@ -27,13 +27,14 @@
             <div class="swiper-slide swiper-slide4">Slide 5</div>
             <div class="swiper-slide swiper-slide5">Slide 6</div>
             <div class="swiper-slide swiper-slide6">Slide 7</div>
+            <div class="swiper-slide swiper-slide7">Slide 8</div>
         </div>
     </div>
     <script src="<%= htmlWebpackPlugin.files.js[0] %>"></script>
     <script>        
         var mySwiper = new Swiper3D('.swiper-container', {
           loop: true,
-          showNum: 3,
+          showNum: 7,
           start: 0
         })
         
@@ -41,10 +42,10 @@
             console.log(current)
         })
 
-        mySwiper.next()
-        mySwiper.prev()
+        //mySwiper.next()
+        //mySwiper.prev()
 
-        mySwiper.jump(0)
+        // mySwiper.jump(0)
     </script>
 </body>
 </html>
