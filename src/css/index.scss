@@ -7,21 +7,20 @@ $deg: 45deg;
     overflow-x: hidden;
     overflow-y: visible;
     .swiper-wrapper{
-        width: 100%;
         transform: translate3d(0, 0, 0);
         transform-origin: 50% 50%;
         backface-visibility: hidden;
         box-sizing: content-box;
-        width: 100px;
-        height: 100px;
         margin: 0 auto;
-        perspective: 600px;
+        perspective: 1000px;
         perspective-origin: 50% 50%;
         transform-style: preserve-3d;
         .swiper-slide{
             position: absolute;
             -webkit-box-reflect: below 1px linear-gradient(transparent 80%,rgba(0,0,0,.3));
             border: 1px solid #000;
+            transition: all 350ms ease-out;
+            backface-visibility: hidden;
             &::after{
                 position: absolute;
                 display: block;

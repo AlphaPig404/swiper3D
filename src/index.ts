@@ -1,11 +1,16 @@
 import EventEmitter from 'eventemitter3';
 import './css/index.scss';
+// import Drag from './Drag';
+
+interface Offsets {
+    [index: number]: number
+}
 
 interface Options {
     loop?: boolean,
     start?: number,
     showNum?: number,
-    offsets?: object
+    offsets?: Offsets
 }
 
 const defaultOpitons:Options = {
@@ -37,14 +42,17 @@ class Swiper3D extends EventEmitter{
 
     private init(){
         this.middleIndex = Math.floor(this.options.showNum / 2)
-        const currentIndex = this.options.start
-
-        const hiddenStyle = `
-            transition: all 0.3s ease;
+        const currentIndex:number = this.options.start
+        const hiddenStyle:string = `
+            transition: all 0.35s ease;
             transform: translate3d(0,0,0) scale(0.2);
             opacity: 0;
             z-index: -100;
         `
+        let itemMaxWidth: number = 0
+        let itemMaxHeight: number = 0
+
+
         this.forEach(this.slides, (slide: HTMLElement, index) => {
             const SCALE_BASE = 0.8
             const ROTATE = 60
@@ -52,18 +60,22 @@ class Swiper3D extends EventEmitter{
             const showIndex = index - this.middleIndex
             const sign = Math.sign(showIndex)
             const absShowIndex = Math.abs(showIndex)
+            const offset = this.options.offsets[index] || 0
 
-            const translateX: number = (1 - 1/Math.pow(2, absShowIndex))*sign
+            const translateX: number = (1 - 1/Math.pow(2, absShowIndex) + offset)*sign 
             const rotateY: number = showIndex ? - sign*ROTATE : 0
             const scale:number = Math.pow(SCALE_BASE, absShowIndex)
+            const brightness = 1 - absShowIndex/10
+            
 
             const zIndex: number = showIndex === 0 ? 0 : - absShowIndex
             
             const cssText = `
-                transition: all 0.5s ease;
+                transition: all 0.35s ease;
                 transform: translateX(${translateX*100}%) rotateY(${rotateY}deg) translateZ(0px) scale(${scale});
                 z-index: ${zIndex};
                 opacity: 1;
+                filter: brightness(${brightness});
             `
 
             if(index < this.options.showNum){
@@ -73,6 +85,12 @@ class Swiper3D extends EventEmitter{
             }
 
             slide.dataset.index = "" + index
+
+            const width = slide.offsetWidth
+            const height = slide.offsetHeight
+
+            itemMaxWidth = width > itemMaxWidth ? width : itemMaxWidth
+            itemMaxHeight = height > itemMaxHeight ? height : itemMaxHeight
         })
 
         this.jump(currentIndex)
@@ -81,12 +99,17 @@ class Swiper3D extends EventEmitter{
             this.intervalID = window.setInterval(this.next.bind(this), 5000)
         }
 
+        this.$wrapper.style.width = itemMaxWidth + 'px'
+        this.$wrapper.style.height = itemMaxHeight + 'px'
+
         this.$wrapper.addEventListener('click', (event:MouseEvent)=>{
             const target = <HTMLButtonElement>event.target
             if(target.classList.contains('swiper-slide')){
                 this.jump(+target.dataset.index)
             }
         })
+
+        // const dragEle = new Drag()
     }
 
     public prev() {

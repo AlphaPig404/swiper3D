@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Demo</title>
     <link rel="stylesheet" href="<%= htmlWebpackPlugin.files.css[0] %>">
@@ -11,8 +11,8 @@
             background: #000000;
         }
         .swiper-slide{
-            width: 100px;
-            height: 100px;
+            width: 200px;
+            height: 200px;
             background: #fff;
         }
     </style>
@@ -33,11 +33,11 @@
     <script src="<%= htmlWebpackPlugin.files.js[0] %>"></script>
     <script>        
         var mySwiper = new Swiper3D('.swiper-container', {
-          loop: true,
+          loop: false,
           showNum: 7,
           start: 0,
           offsets: {
-              1: 0.1,
+              0: 0.1,
               6: 0.1,
           }
         })
@@ -45,7 +45,6 @@
         mySwiper.on('change', function(current){
             console.log(current)
         })
-
         //mySwiper.next()
         //mySwiper.prev()
 
