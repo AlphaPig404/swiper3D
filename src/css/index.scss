@@ -6,6 +6,7 @@ $deg: 45deg;
     position: relative;
     overflow-x: hidden;
     overflow-y: visible;
+    -webkit-tap-highlight-color: transparent;
     .swiper-wrapper{
         transform: translate3d(0, 0, 0);
         transform-origin: 50% 50%;
@@ -18,45 +19,8 @@ $deg: 45deg;
         .swiper-slide{
             position: absolute;
             -webkit-box-reflect: below 1px linear-gradient(transparent 80%,rgba(0,0,0,.3));
-            border: 1px solid #000;
             transition: all 350ms ease-out;
             backface-visibility: hidden;
-            &::after{
-                position: absolute;
-                display: block;
-                content: " ";
-                width: 4px;
-                height: 100%;
-                background: black;
-                left: 50%;
-                top: 0;
-                margin-left: -2px;
-            }
         }
-        // .swiper-slide0{
-        //     background: red;
-        //     transform: translateX(-75%) rotateY($deg) scale(0.64);
-        //     z-index: -2;
-        // }
-        // .swiper-slide1{
-        //     background: orange;
-        //     transform: translateX(-50%) rotateY($deg) scale(0.8);
-        //     z-index: -1;
-        // }
-        // .swiper-slide2{
-        //     background: yellow;
-        //     z-index: 0;
-        // }
-        // .swiper-slide3{
-        //     background: green;
-        //     transform: translateX(50%) rotateY(-$deg) scale(0.8);
-        //     z-index: -1;
-    
-        // }
-        // .swiper-slide4{
-        //     background: blue;
-        //     transform: translateX(75%) rotateY(-$deg) scale(0.64);
-        //     z-index: -2;
-        // }
     }
 }

@@ -5,11 +5,12 @@ interface callbackFunc {
 export default class Drag {
     private ele: Element
     private isSupportTouch: boolean
-    private cb: Function
+    private cb: callbackFunc
     private originX: number 
     private originY: number
+    private mouseDown: boolean
 
-    constructor(ele: Element, cb: (offsetX: number, offsetY: number) => void){
+    constructor(ele: Element, cb: callbackFunc){
         // super()
         this.ele = ele
         this.isSupportTouch = "ontouchend" in document ? true : false;
@@ -31,29 +32,31 @@ export default class Drag {
         }
     }
 
-    public touchstart = function(event: TouchEvent | MouseEvent) {
-        event.preventDefault();
-        event.stopPropagation();
-        this.mousedowned = true
+    private touchstart(event: TouchEvent | MouseEvent) {
         console.log('mousedownHandler')
+        this.mouseDown = true
         this.originX = this.isSupportTouch ?  (<TouchEvent>event).changedTouches[0].clientX : (<MouseEvent>event).clientX
         this.originY = this.isSupportTouch ? (<TouchEvent>event).changedTouches[0].clientY : (<MouseEvent>event).clientY
     }
 
-    public touchmove = function(event: TouchEvent | MouseEvent) {
-        console.log('touchmove')
+    private touchmove(event: TouchEvent | MouseEvent) {
+        if(this.mouseDown){
+            console.log('touchmove')
+        }
     }
 
-    public touchend = function(event: TouchEvent | MouseEvent) {
-        this.endX = this.isSupportTouch ?  (<TouchEvent>event).changedTouches[0].clientX : (<MouseEvent>event).clientX
-        this.endY = this.isSupportTouch ? (<TouchEvent>event).changedTouches[0].clientY : (<MouseEvent>event).clientY
+    private touchend(event: TouchEvent | MouseEvent) {
+        this.mouseDown = false
+        const endX = this.isSupportTouch ?  (<TouchEvent>event).changedTouches[0].clientX : (<MouseEvent>event).clientX
+        const endY = this.isSupportTouch ? (<TouchEvent>event).changedTouches[0].clientY : (<MouseEvent>event).clientY
 
-        const offsetX = this.endX - this.originX
-        const offsetY = this.endY - this.originY
+        const offsetX = endX - this.originX
+        const offsetY = endY - this.originY
         this.cb(offsetX, offsetY)
     }
 
     private touchcancel(event: TouchEvent | MouseEvent){
+        this.mouseDown = false
         console.log('touchcancel')
     }
 }

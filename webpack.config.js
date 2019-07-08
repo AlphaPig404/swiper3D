@@ -4,24 +4,47 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 
 module.exports = {
+    mode: "development",
     entry: './src/index.ts',
     output: {
         path: path.resolve(__dirname, 'dist'),
         filename: 'index.js',
         libraryTarget: "window"
     },
-    mode: 'development',
+    // Enable sourcemaps for debugging webpack's output.
+    devtool: "source-map",
+
+    resolve: {
+        // Add '.ts' and '.tsx' as resolvable extensions.
+        extensions: [".js", ".ts", ".tsx"]
+    },
+    devServer: {
+        host: '0.0.0.0'
+    },
     module: {
         rules: [
+            {
+                test: /\.ts(x?)$/,
+                exclude: /node_modules/,
+                use: [
+                    {
+                        loader: "ts-loader"
+                    }
+                ]
+            },
+            // All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
+            {
+                enforce: "pre",
+                test: /\.js$/,
+                loader: "source-map-loader"
+            },
             { 
                 test: /\.scss$/,
                 use: ExtractTextPlugin.extract({
                     fallback: 'style-loader',
-                    //如果需要，可以在 sass-loader 之前将 resolve-url-loader 链接进来
                     use: ['css-loader', 'sass-loader']
                 })
             },
-            { test: /\.ts$/, use: 'ts-loader' }
         ]
     },
     plugins: [
@@ -31,4 +54,4 @@ module.exports = {
             inject: false
         })
     ]
-}
+};

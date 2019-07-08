@@ -1,6 +1,6 @@
-import EventEmitter from 'eventemitter3';
+import * as EventEmitter from 'eventemitter3';
 import './css/index.scss';
-// import Drag from './Drag';
+import Drag from './Drag';
 
 interface Offsets {
     [index: number]: number
@@ -20,7 +20,7 @@ const defaultOpitons:Options = {
 }
 
 
-class Swiper3D extends EventEmitter{
+export class Swiper3D extends EventEmitter{
     private options: Options
     private $swiper: HTMLElement
     private $wrapper: HTMLElement
@@ -29,6 +29,7 @@ class Swiper3D extends EventEmitter{
     private currentIndex: number = 0
     private middleIndex: number = 0
     private intervalID: number
+    private emmitClick: boolean
     
     constructor(container: string|HTMLElement, options: Options){
         super()
@@ -68,14 +69,15 @@ class Swiper3D extends EventEmitter{
             const brightness = 1 - absShowIndex/10
             
 
-            const zIndex: number = showIndex === 0 ? 0 : - absShowIndex
+            const zIndex: number = showIndex === 0 ? 999 : absShowIndex
             
             const cssText = `
                 transition: all 0.35s ease;
-                transform: translateX(${translateX*100}%) rotateY(${rotateY}deg) translateZ(0px) scale(${scale});
+                transform: translateX(${translateX*100}%) rotateY(${rotateY}deg) translateZ(1px) scale(${scale});
                 z-index: ${zIndex};
-                opacity: 1;
+                opacity: ${1 - absShowIndex*0.01};
                 filter: brightness(${brightness});
+                
             `
 
             if(index < this.options.showNum){
@@ -103,13 +105,31 @@ class Swiper3D extends EventEmitter{
         this.$wrapper.style.height = itemMaxHeight + 'px'
 
         this.$wrapper.addEventListener('click', (event:MouseEvent)=>{
-            const target = <HTMLButtonElement>event.target
-            if(target.classList.contains('swiper-slide')){
-                this.jump(+target.dataset.index)
-            }
+            if(this.emmitClick){
+                const target = this.getNode(<HTMLButtonElement>event.target, 'swiper-slide')
+                this.emmitClick = false
+                if(target.dataset){
+                    this.jump(+target.dataset.index)
+                }
+            }else{
+
+            } 
         })
 
-        // const dragEle = new Drag()
+        const dragEle = new Drag(this.$wrapper, (x: number, y: number)=>{
+            if(Math.abs(x) > 10){
+                this.emmitClick = false
+                if(x > 50){
+                    this.prev()
+                }
+                else if(x < -50){
+                    this.next()
+                    
+                }
+            }else{
+                this.emmitClick = true
+            }
+        })
     }
 
     public prev() {
@@ -129,6 +149,16 @@ class Swiper3D extends EventEmitter{
 
     public clearTimer(){
         window.clearInterval(this.intervalID)
+    }
+
+    private getNode(ele: Element, tag: string): any{
+        if(ele.classList.contains(tag)){
+            return ele
+        }else if(ele.nodeName === 'BODY'){
+           return HTMLBodyElement
+        }else{
+            return this.getNode(ele.parentElement, tag)
+        }
     }
 
     private updateView(){
@@ -160,8 +190,3 @@ class Swiper3D extends EventEmitter{
     }
 }
 
-declare global {
-    interface Window { Swiper3D: any; }
-}
-
-window.Swiper3D = Swiper3D;

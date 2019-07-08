@@ -14,26 +14,43 @@
             width: 200px;
             height: 200px;
             background: #fff;
+            border: 2px solid #fff;
+
+        }
+        /*.swiper-slide::after{
+            position: absolute;
+            display: block;
+            content: " ";
+            width: 4px;
+            height: 100%;
+            background: black;
+            left: 50%;
+            top: 0;
+            margin-left: -2px;
+        }*/
+        .swiper-slide img{
+            width: 100%;
+            height: 100%;
         }
     </style>
 </head>
 <body>
     <div class="swiper-container">
         <div class="swiper-wrapper">
-            <div class="swiper-slide swiper-slide0">Slide 1</div>
-            <div class="swiper-slide swiper-slide1">Slide 2</div>
-            <div class="swiper-slide swiper-slide2">Slide 3</div>
-            <div class="swiper-slide swiper-slide3">Slide 4</div>
-            <div class="swiper-slide swiper-slide4">Slide 5</div>
-            <div class="swiper-slide swiper-slide5">Slide 6</div>
-            <div class="swiper-slide swiper-slide6">Slide 7</div>
-            <div class="swiper-slide swiper-slide7">Slide 8</div>
+            <div class="swiper-slide swiper-slide0"><img src="https://gss1.bdstatic.com/9vo3dSag_xI4khGkpoWK1HF6hhy/baike/w%3D400/sign=aa6e68b84ba98226b8c12a27ba80b97a/63d9f2d3572c11dfe84655ee6b2762d0f603c26c.jpg" alt=""></div>
+            <div class="swiper-slide swiper-slide1"><img src="https://gss1.bdstatic.com/9vo3dSag_xI4khGkpoWK1HF6hhy/baike/w%3D400/sign=aa6e68b84ba98226b8c12a27ba80b97a/63d9f2d3572c11dfe84655ee6b2762d0f603c26c.jpg" alt=""></div>
+            <div class="swiper-slide swiper-slide2"><img src="https://gss1.bdstatic.com/9vo3dSag_xI4khGkpoWK1HF6hhy/baike/w%3D400/sign=aa6e68b84ba98226b8c12a27ba80b97a/63d9f2d3572c11dfe84655ee6b2762d0f603c26c.jpg" alt=""></div>
+            <div class="swiper-slide swiper-slide3"><img src="https://gss1.bdstatic.com/9vo3dSag_xI4khGkpoWK1HF6hhy/baike/w%3D400/sign=aa6e68b84ba98226b8c12a27ba80b97a/63d9f2d3572c11dfe84655ee6b2762d0f603c26c.jpg" alt=""></div>
+            <div class="swiper-slide swiper-slide4"><img src="https://gss1.bdstatic.com/9vo3dSag_xI4khGkpoWK1HF6hhy/baike/w%3D400/sign=aa6e68b84ba98226b8c12a27ba80b97a/63d9f2d3572c11dfe84655ee6b2762d0f603c26c.jpg" alt=""></div>
+            <div class="swiper-slide swiper-slide5"><img src="https://gss1.bdstatic.com/9vo3dSag_xI4khGkpoWK1HF6hhy/baike/w%3D400/sign=aa6e68b84ba98226b8c12a27ba80b97a/63d9f2d3572c11dfe84655ee6b2762d0f603c26c.jpg" alt=""></div>
+            <div class="swiper-slide swiper-slide6"><img src="https://gss1.bdstatic.com/9vo3dSag_xI4khGkpoWK1HF6hhy/baike/w%3D400/sign=aa6e68b84ba98226b8c12a27ba80b97a/63d9f2d3572c11dfe84655ee6b2762d0f603c26c.jpg" alt=""></div>
+            <div class="swiper-slide swiper-slide7"><img src="https://gss1.bdstatic.com/9vo3dSag_xI4khGkpoWK1HF6hhy/baike/w%3D400/sign=aa6e68b84ba98226b8c12a27ba80b97a/63d9f2d3572c11dfe84655ee6b2762d0f603c26c.jpg" alt=""></div>
         </div>
     </div>
     <script src="<%= htmlWebpackPlugin.files.js[0] %>"></script>
     <script>        
         var mySwiper = new Swiper3D('.swiper-container', {
-          loop: false,
+          loop: true,
           showNum: 7,
           start: 0,
           offsets: {
