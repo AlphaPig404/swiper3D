@@ -10,6 +10,14 @@
 
 
 ## usage
+### import
+```
+    npm run build
+
+    <link rel="stylesheet" href="dist/main.css">
+    ...
+    <script src="dist/index.min.js"></script>
+```
 ### init
 ```
     var mySwiper = new Swiper3D('.swiper-container', {
