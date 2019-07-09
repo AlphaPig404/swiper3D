@@ -97,13 +97,22 @@ export class Swiper3D extends EventEmitter{
 
         this.jump(currentIndex)
 
-        if(this.options.loop){
-            this.intervalID = window.setInterval(this.next.bind(this), 5000)
-        }
-
+        this.initInterval()
+        
         this.$wrapper.style.width = itemMaxWidth + 'px'
         this.$wrapper.style.height = itemMaxHeight + 'px'
 
+        this.bindClick()
+        this.initDragEvent()
+    }
+
+    private initInterval(){
+        if(this.options.loop && !this.intervalID){
+            this.intervalID = window.setInterval(this.next.bind(this), 5000)
+        }
+    }
+
+    private bindClick(){
         this.$wrapper.addEventListener('click', (event:MouseEvent)=>{
             if(this.emmitClick){
                 const target = this.getNode(<HTMLButtonElement>event.target, 'swiper-slide')
@@ -115,8 +124,15 @@ export class Swiper3D extends EventEmitter{
 
             } 
         })
+    }
 
-        const dragEle = new Drag(this.$wrapper, (x: number, y: number)=>{
+    private initDragEvent(){
+        const dragEle = new Drag(this.$wrapper)
+        dragEle.on('drag:start', ()=>{
+            window.clearInterval(this.intervalID)
+            this.intervalID = null
+        })
+        dragEle.on('drag:end', (x)=>{
             if(Math.abs(x) > 10){
                 this.emmitClick = false
                 if(x > 50){
@@ -124,11 +140,14 @@ export class Swiper3D extends EventEmitter{
                 }
                 else if(x < -50){
                     this.next()
-                    
                 }
             }else{
                 this.emmitClick = true
             }
+            this.initInterval()
+        })
+        dragEle.on('drag:cancel', ()=>{
+            this.initInterval()
         })
     }
 
