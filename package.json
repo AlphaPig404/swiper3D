@@ -2,42 +2,40 @@
   "name": "swiper3D",
   "version": "1.0.0",
   "description": "",
-  "main": "gulpfile.js",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "directories": {
     "test": "test"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "webpack-dev-server --inline --progress --config webpack.config.js",
-    "build": "gulp"
+    "dev": "webpack-dev-server --inline --progress --mode=development --config  webpack.config.js",
+    "build": "webpack --mode=production"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "css-loader": "^3.0.0",
-    "eventemitter3": "^4.0.0",
-    "extract-text-webpack-plugin": "^4.0.0-beta.0",
-    "gulp": "^4.0.2",
-    "gulp-autoprefixer": "^6.1.0",
-    "gulp-minify-css": "^1.2.4",
-    "gulp-ruby-sass": "^4.0.0",
-    "gulp-sass": "^4.0.2",
-    "gulp-typescript": "^5.0.1",
-    "node-sass": "^4.12.0",
-    "sass-loader": "^7.1.0",
-    "style-loader": "^0.23.1",
-    "ts-loader": "^6.0.4",
-    "typescript": "^3.5.2",
-    "webpack-dev-server": "^3.7.2"
+    "eventemitter3": "^4.0.0"
   },
   "browserslist": {
-    "browsers": "last 2 versions"
+    "browsers": "last 5 versions"
   },
   "devDependencies": {
+    "autoprefixer": "^9.6.1",
+    "css-loader": "^3.0.0",
+    "extract-text-webpack-plugin": "^4.0.0-beta.0",
     "html-webpack-plugin": "^3.2.0",
+    "mini-css-extract-plugin": "^0.7.0",
+    "node-sass": "^4.12.0",
+    "postcss-loader": "^3.0.0",
+    "sass-loader": "^7.1.0",
     "source-map-loader": "^0.2.4",
+    "style-loader": "^0.23.1",
+    "ts-loader": "^6.0.4",
+    "typescript": "^3.5.3",
     "webpack": "^4.35.2",
-    "webpack-cli": "^3.3.5"
+    "webpack-cli": "^3.3.5",
+    "webpack-dev-server": "^3.7.2"
   }
 }
