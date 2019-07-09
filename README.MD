@@ -7,7 +7,7 @@
 ```
     npm install && npm run dev
 ```
-![image](https://github.com/AlphaPig404/swiper3D/test/demo.gif)
+![image](https://github.com/AlphaPig404/swiper3D/blob/master/test/demo.gif)
 
 ## usage
 ### import
